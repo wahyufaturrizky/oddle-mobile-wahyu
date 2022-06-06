@@ -2,6 +2,7 @@ import InfoImage from '@assets/info.svg';
 import PriceImage from '@assets/price.svg';
 import StarImage from '@assets/star.svg';
 import WishlistImage from '@assets/wishlist.svg';
+import WishlistMarkImage from '@assets/Wishlist-Mark.svg';
 import {Button} from 'components/Button';
 import {Image} from 'components/Image';
 import {Skeleton} from 'components/Skeleton';
@@ -15,13 +16,12 @@ import {FlatList, Linking, View, TouchableOpacity} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {BorderRadiusEnum, MarginEnum, PaddingEnum} from 'styles/Spacer';
 import {
-  checkFavoriteById,
   fetchAllFavoriteProducts,
   fetchAllProducts,
   uncheckFavoriteById,
 } from '../services/retrieveData';
 import {BottomTab} from 'components/BottomTab';
-import WishlistMarkImage from '@assets/Wishlist-Mark.svg';
+import {ColorBaseEnum} from 'styles/Colors';
 
 const EmptyCardRecomended = () => {
   return (
@@ -32,12 +32,28 @@ const EmptyCardRecomended = () => {
   );
 };
 
-const HomePage = (props) => {
+const FavoritePage = (props) => {
   const [stateProducts, setStateProducts] = useState([]);
   const [stateFavoriteProducts, setStateFavoriteProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     SplashScreen.hide();
+  }, []);
+
+  const getAllProduct = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetchAllProducts();
+      if (res) {
+        setIsLoading(false);
+        setStateProducts(res.page.edges);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.log('@error', error.message);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   const getAllFavoriteProduct = useCallback(async () => {
@@ -55,22 +71,6 @@ const HomePage = (props) => {
       setIsLoading(false);
     }
   });
-
-  const getAllProduct = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetchAllProducts();
-      if (res) {
-        setIsLoading(false);
-        setStateProducts(res.page.edges);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      console.log('@error', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
     getAllProduct();
@@ -95,98 +95,66 @@ const HomePage = (props) => {
     }
   };
 
-  const handlePressCheck = async (id) => {
-    setIsLoading(true);
-    try {
-      const res = await checkFavoriteById(id);
-      if (res) {
-        getAllProduct();
-        getAllFavoriteProduct();
-      }
-    } catch (error) {
-      console.log(error.message);
-      setIsLoading(false);
-    }
-  };
-
   return (
     <BackgroundImageLayout source={require('assets/background-gradient.jpg')}>
+      <Row
+        shadowColor={ColorBaseEnum.black}
+        shadowOffset={{
+          width: 0,
+          height: 2,
+        }}
+        shadowOpacity={0.25}
+        shadowRadius={3.84}
+        elevation={5}
+        paddingHorizontal={PaddingEnum['4x']}
+        paddingVertical={PaddingEnum['2x']}
+        justifyContent="space-between"
+        backgroundColor="white">
+        <Col marginLeft={MarginEnum['2x']}>
+          <Text variant="h1" label="Favourites" />
+        </Col>
+        <Col>
+          <Image
+            source={require('assets/avatar.jpg')}
+            height={54}
+            width={54}
+            borderRadius={BorderRadiusEnum['wide']}
+          />
+        </Col>
+      </Row>
+
       <BasicLayout>
-        <Row marginVertical={MarginEnum['2x']}>
-          <Col>
-            <Image
-              source={require('assets/avatar.jpg')}
-              height={54}
-              width={54}
-              borderRadius={BorderRadiusEnum['wide']}
-            />
-          </Col>
-          <Col marginLeft={MarginEnum['2x']}>
-            <Text variant="p-small" label="Good morning!" />
-            <Text variant="h3-bold" label="Wahyu Fatur Rizki" />
-          </Col>
-        </Row>
-
-        <Text
-          marginBottom={MarginEnum['2x']}
-          variant="h3-bold"
-          label="Recommended for you"
-        />
         <FlatList
-          ListEmptyComponent={EmptyCardRecomended}
-          data={isLoading ? [] : stateProducts}
+          ListEmptyComponent={
+            stateFavoriteProducts.length > 0 ? (
+              EmptyCardRecomended
+            ) : (
+              <Text variant={'h3'} label="Favorite product is empty" />
+            )
+          }
+          data={
+            isLoading
+              ? []
+              : stateProducts.filter((filtering) =>
+                  stateFavoriteProducts.includes(filtering.node.id),
+                )
+          }
           keyExtractor={({node}) => {
             return node.id;
           }}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
           contentContainerStyle={{
             paddingBottom: PaddingEnum['4x'],
           }}
           ItemSeparatorComponent={() => (
-            <View style={{marginVertical: MarginEnum['0.5x']}} />
+            <View style={{marginVertical: MarginEnum['2x']}} />
           )}
           renderItem={({item, index}) => (
             <CardRecomended
               loading={isLoading}
+              stateFavoriteProducts={stateFavoriteProducts}
               {...item}
               key={index}
               handlePressUncheck={(id) => handlePressUncheck(id)}
-              handlePressCheck={(id) => handlePressCheck(id)}
-              stateFavoriteProducts={stateFavoriteProducts}
-              onPressOrderNow={(link) => handleOrderNow(link)}
-              onPress={() => {}}
-            />
-          )}
-        />
-
-        <Text
-          marginBottom={MarginEnum['2x']}
-          variant="h3-bold"
-          label="Because you like Nyx"
-        />
-        <FlatList
-          ListEmptyComponent={EmptyCardRecomended}
-          data={isLoading ? [] : stateProducts}
-          keyExtractor={({node}) => {
-            return node.id;
-          }}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          contentContainerStyle={{
-            paddingBottom: PaddingEnum['4x'],
-          }}
-          ItemSeparatorComponent={() => (
-            <View style={{marginVertical: MarginEnum['0.5x']}} />
-          )}
-          renderItem={({item, index}) => (
-            <CardRecomended
-              loading={isLoading}
-              {...item}
-              key={index}
-              handlePressUncheck={(id) => handlePressUncheck(id)}
-              handlePressCheck={(id) => handlePressCheck(id)}
-              stateFavoriteProducts={stateFavoriteProducts}
               onPressOrderNow={(link) => handleOrderNow(link)}
               onPress={() => {}}
             />
@@ -216,7 +184,7 @@ const CardRecomended = (props) => {
         backgroundColor: '#F5F5F5',
         borderRadius: BorderRadiusEnum['2x'],
         height: 420,
-        width: 280,
+        width: '100%',
         padding: 10,
         marginRight: MarginEnum['2x'],
       }}>
@@ -252,9 +220,7 @@ const CardRecomended = (props) => {
                 <WishlistMarkImage />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity onPress={() => props.handlePressCheck(id)}>
-                <WishlistImage />
-              </TouchableOpacity>
+              <WishlistImage />
             )}
           </Col>
         </Row>
@@ -335,4 +301,4 @@ const CardRecomended = (props) => {
   );
 };
 
-export default HomePage;
+export default FavoritePage;

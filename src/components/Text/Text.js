@@ -337,6 +337,10 @@ const Text = (props) => {
               padding: props.padding,
               borderRadius: props.borderRadius,
               opacity: props.opacity,
+              paddingHorizontal: props.paddingHorizontal,
+              paddingVertical: props.paddingVertical,
+              backgroundColor: props.backgroundColor,
+              width: props.width,
             }}
             textTransform={props.textTransform}>
             {props.label}

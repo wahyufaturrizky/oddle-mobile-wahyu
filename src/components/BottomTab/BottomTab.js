@@ -1,38 +1,32 @@
-import FoundationActiveIcon from '@assets/images/Icons/SVG/FoundationActiveIcon.svg';
-import FoundationInActiveIcon from '@assets/images/Icons/SVG/FoundationInActiveIcon.svg';
-import HistoryActive from '@assets/images/Icons/SVG/HistoryActive.svg';
-import HistoryInActive from '@assets/images/Icons/SVG/HistoryInActive.svg';
-import HomeActiveIcon from '@assets/images/Icons/SVG/HomeActiveIcon.svg';
-import HomeInactiveIcon from '@assets/images/Icons/SVG/HomeInactiveIcon.svg';
-import SettingsActive from '@assets/images/Icons/SVG/SettingsActive.svg';
-import SettingsInActive from '@assets/images/Icons/SVG/SettingsInActive.svg';
+import HomeActiveIcon from '@assets/HomeActive.svg';
+import HomeInactiveIcon from '@assets/HomeInActive.svg';
+import FavoriteActive from '@assets/favorite-active.svg';
+import FavoriteInActive from '@assets/favorite-inactive.svg';
+import ShopIconActive from '@assets/shop-icon-active.svg';
+import ShopIconInActive from '@assets/shop-icon-inactive.svg';
 import {CommonActions} from '@react-navigation/native';
 import {Text} from 'components/Text';
 import React from 'react';
-import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ColorBaseEnum} from '../../styles/Colors';
-import {PaddingEnum} from '../../styles/Spacer';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ColorBaseEnum} from 'styles/Colors';
+import {PaddingEnum} from 'styles/Spacer';
 
 const BottomTab = (props) => {
   const title = props.route.params?.title || props.route.name;
 
-  const gotoAkun = async () => {
-    props.navigation.navigate('MyAccount', {title: 'Settings'});
+  const gotoFavorite = async () => {
+    props.navigation.navigate('FavoritePage', {title: 'Favourites'});
   };
 
-  const gotoHistory = async () => {
-    Alert.alert('Under constructions ...');
-  };
-
-  const gotoCategory = () => {
-    props.navigation.navigate('CategoryPage', {title: 'Category'});
+  const gotoShop = () => {
+    props.navigation.navigate('ShopPage', {title: 'Shop'});
   };
 
   const gotoHome = () => {
     props.navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{name: 'HomePage', params: {title: 'Home Page'}}],
+        routes: [{name: 'HomePage', params: {title: 'Home'}}],
       }),
     );
   };
@@ -52,38 +46,32 @@ const BottomTab = (props) => {
       ]}>
       <TouchableOpacity onPress={gotoHome}>
         <View style={{alignItems: 'center'}}>
-          {title === 'Home Page' || title === 'HomePage' ? (
+          {props.route.name === 'HomePage' ? (
             <HomeActiveIcon />
           ) : (
             <HomeInactiveIcon />
           )}
-          {props.withText && <Text label="Home" />}
+          <Text variant="p-label" label="Home" />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={gotoCategory}>
+      <TouchableOpacity style={{marginTop: -12}} onPress={gotoShop}>
         <View style={{alignItems: 'center'}}>
-          {title === 'Category' ? (
-            <FoundationActiveIcon />
+          {props.route.name === 'ShopPage' ? (
+            <ShopIconActive />
           ) : (
-            <FoundationInActiveIcon />
+            <ShopIconInActive />
           )}
-          {props.withText && <Text label="Category" />}
+          <Text variant="p-label" label="Shop" />
         </View>
       </TouchableOpacity>
-      {/* <TouchableOpacity onPress={gotoHistory}>
+      <TouchableOpacity onPress={gotoFavorite}>
         <View style={{alignItems: 'center'}}>
-          {title === 'Donation Report' ? (
-            <HistoryActive />
+          {props.route.name === 'FavoritePage' ? (
+            <FavoriteActive />
           ) : (
-            <HistoryInActive />
+            <FavoriteInActive />
           )}
-          {props.withText && <Text label="Report" />}
-        </View>
-      </TouchableOpacity> */}
-      <TouchableOpacity onPress={gotoAkun}>
-        <View style={{alignItems: 'center'}}>
-          {title === 'Settings' ? <SettingsActive /> : <SettingsInActive />}
-          {props.withText && <Text label="Settings" />}
+          <Text variant="p-label" label="Favourites" />
         </View>
       </TouchableOpacity>
     </View>

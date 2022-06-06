@@ -11,6 +11,8 @@ export const Col = (props) => {
         justifyContent: props.justifyContent,
         alignItems: props.alignItems,
         marginHorizontal: props.marginHorizontal,
+        borderColor: props.borderColor,
+        borderWidth: props.borderWidth,
       }}>
       {props.children}
     </View>

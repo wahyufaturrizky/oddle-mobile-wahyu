@@ -1,15 +1,21 @@
 import axios from 'axios';
-import {URL_DEV} from 'utils/global';
+import {GraphQLClient} from 'graphql-request';
+import {
+  GRAPHCMS_ENDPOINT,
+  GRAPHCMS_TOKEN,
+  FAVORITE_URL_DEV,
+  app_api_key,
+} from 'utils/global';
 /**
  * @author https://www.linkedin.com/in/wahyu-fatur-rizky
  * @return { obj }
- * Custom Header axios,
+ * Custom Header graphql,
  * create from
- * using this function should axios().get(values)
+ * using graphql request
  */
 
-export const Request = () => {
-  return axios.create({
-    baseURL: URL_DEV,
-  });
-};
+export const graphcms = new GraphQLClient(GRAPHCMS_ENDPOINT, {
+  headers: {
+    Authorization: `Bearer ${GRAPHCMS_TOKEN}`,
+  },
+});
