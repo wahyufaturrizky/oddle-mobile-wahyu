@@ -26,6 +26,13 @@ export const Row = (props) => {
         marginVertical: props.marginVertical,
         flex: props.flex,
         borderRadius: props.borderRadius,
+        borderColor: props.borderColor,
+        borderWidth: props.borderWidth,
+        shadowColor: props.shadowColor,
+        shadowOffset: props.shadowOffset,
+        shadowOpacity: props.shadowOpacity,
+        shadowRadius: props.shadowRadius,
+        elevation: props.elevation,
       }}>
       {props.children}
     </View>

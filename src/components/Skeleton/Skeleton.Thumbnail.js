@@ -14,20 +14,20 @@ export const SkeletonThumbnail = (props) => {
         marginTop: props.marginTop,
       }}>
       <Skeleton
-        color={ColorBaseGrayEnum.gray300}
+        color={ColorBaseGrayEnum.gray}
         width={height * 0.3}
         height={height * 0.2}
         borderRadius={BorderRadiusEnum['0.5x']}
       />
       <Skeleton
-        color={ColorBaseGrayEnum.gray300}
+        color={ColorBaseGrayEnum.gray}
         width={150}
         height={15}
         borderRadius={BorderRadiusEnum['0.5x']}
         marginTop={MarginEnum['2x']}
       />
       <Skeleton
-        color={ColorBaseGrayEnum.gray300}
+        color={ColorBaseGrayEnum.gray}
         width={200}
         height={10}
         borderRadius={BorderRadiusEnum['0.5x']}
@@ -40,14 +40,14 @@ export const SkeletonThumbnail = (props) => {
           justifyContent: 'space-between',
         }}>
         <Skeleton
-          color={ColorBaseGrayEnum.gray300}
+          color={ColorBaseGrayEnum.gray}
           width={50}
           height={10}
           borderRadius={BorderRadiusEnum['0.5x']}
           marginTop={MarginEnum['2x']}
         />
         <Skeleton
-          color={ColorBaseGrayEnum.gray300}
+          color={ColorBaseGrayEnum.gray}
           width={50}
           height={10}
           borderRadius={BorderRadiusEnum['0.5x']}

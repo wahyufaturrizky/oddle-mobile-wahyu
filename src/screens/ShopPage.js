@@ -21,6 +21,7 @@ import {
   uncheckFavoriteById,
 } from '../services/retrieveData';
 import {BottomTab} from 'components/BottomTab';
+import {ColorBaseEnum} from 'styles/Colors';
 import WishlistMarkImage from '@assets/Wishlist-Mark.svg';
 
 const EmptyCardRecomended = () => {
@@ -32,7 +33,7 @@ const EmptyCardRecomended = () => {
   );
 };
 
-const HomePage = (props) => {
+const ShopPage = (props) => {
   const [stateProducts, setStateProducts] = useState([]);
   const [stateFavoriteProducts, setStateFavoriteProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -111,26 +112,41 @@ const HomePage = (props) => {
 
   return (
     <BackgroundImageLayout source={require('assets/background-gradient.jpg')}>
+      <Row
+        shadowColor={ColorBaseEnum.black}
+        shadowOffset={{
+          width: 0,
+          height: 2,
+        }}
+        shadowOpacity={0.25}
+        shadowRadius={3.84}
+        elevation={5}
+        paddingHorizontal={PaddingEnum['4x']}
+        paddingVertical={PaddingEnum['2x']}
+        backgroundColor="white">
+        <Col>
+          <Image
+            source={require('assets/avatar.jpg')}
+            height={54}
+            width={54}
+            borderRadius={BorderRadiusEnum['wide']}
+          />
+        </Col>
+        <Col marginLeft={MarginEnum['2x']}>
+          <Text variant="p-small" label="Good morning!" />
+          <Text variant="h3-bold" label="Wahyu Fatur Rizki" />
+        </Col>
+      </Row>
+
       <BasicLayout>
-        <Row marginVertical={MarginEnum['2x']}>
-          <Col>
-            <Image
-              source={require('assets/avatar.jpg')}
-              height={54}
-              width={54}
-              borderRadius={BorderRadiusEnum['wide']}
-            />
-          </Col>
-          <Col marginLeft={MarginEnum['2x']}>
-            <Text variant="p-small" label="Good morning!" />
-            <Text variant="h3-bold" label="Wahyu Fatur Rizki" />
-          </Col>
-        </Row>
-
         <Text
-          marginBottom={MarginEnum['2x']}
-          variant="h3-bold"
-          label="Recommended for you"
+          marginVertical={MarginEnum['2x']}
+          variant="p-small"
+          label={
+            isLoading
+              ? 'Loading...'
+              : `${stateProducts.length} products sorted by price`
+          }
         />
         <FlatList
           ListEmptyComponent={EmptyCardRecomended}
@@ -138,55 +154,20 @@ const HomePage = (props) => {
           keyExtractor={({node}) => {
             return node.id;
           }}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
           contentContainerStyle={{
             paddingBottom: PaddingEnum['4x'],
           }}
           ItemSeparatorComponent={() => (
-            <View style={{marginVertical: MarginEnum['0.5x']}} />
+            <View style={{marginVertical: MarginEnum['2x']}} />
           )}
           renderItem={({item, index}) => (
             <CardRecomended
               loading={isLoading}
               {...item}
+              stateFavoriteProducts={stateFavoriteProducts}
               key={index}
               handlePressUncheck={(id) => handlePressUncheck(id)}
               handlePressCheck={(id) => handlePressCheck(id)}
-              stateFavoriteProducts={stateFavoriteProducts}
-              onPressOrderNow={(link) => handleOrderNow(link)}
-              onPress={() => {}}
-            />
-          )}
-        />
-
-        <Text
-          marginBottom={MarginEnum['2x']}
-          variant="h3-bold"
-          label="Because you like Nyx"
-        />
-        <FlatList
-          ListEmptyComponent={EmptyCardRecomended}
-          data={isLoading ? [] : stateProducts}
-          keyExtractor={({node}) => {
-            return node.id;
-          }}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          contentContainerStyle={{
-            paddingBottom: PaddingEnum['4x'],
-          }}
-          ItemSeparatorComponent={() => (
-            <View style={{marginVertical: MarginEnum['0.5x']}} />
-          )}
-          renderItem={({item, index}) => (
-            <CardRecomended
-              loading={isLoading}
-              {...item}
-              key={index}
-              handlePressUncheck={(id) => handlePressUncheck(id)}
-              handlePressCheck={(id) => handlePressCheck(id)}
-              stateFavoriteProducts={stateFavoriteProducts}
               onPressOrderNow={(link) => handleOrderNow(link)}
               onPress={() => {}}
             />
@@ -216,7 +197,7 @@ const CardRecomended = (props) => {
         backgroundColor: '#F5F5F5',
         borderRadius: BorderRadiusEnum['2x'],
         height: 420,
-        width: 280,
+        width: '100%',
         padding: 10,
         marginRight: MarginEnum['2x'],
       }}>
@@ -335,4 +316,4 @@ const CardRecomended = (props) => {
   );
 };
 
-export default HomePage;
+export default ShopPage;
