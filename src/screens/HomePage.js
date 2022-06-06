@@ -22,6 +22,7 @@ import {
 } from '../services/retrieveData';
 import {BottomTab} from 'components/BottomTab';
 import WishlistMarkImage from '@assets/Wishlist-Mark.svg';
+import DoubleClick from 'react-native-double-click';
 
 const EmptyCardRecomended = () => {
   return (
@@ -211,127 +212,129 @@ const CardRecomended = (props) => {
     id,
   } = props.node;
   return (
-    <View
-      style={{
-        backgroundColor: '#F5F5F5',
-        borderRadius: BorderRadiusEnum['2x'],
-        height: 420,
-        width: 280,
-        padding: 10,
-        marginRight: MarginEnum['2x'],
-      }}>
-      <BackgroundImageLayout
-        source={{
-          uri: `https:${imageProduct}`,
-        }}
-        imageStyle={{
-          borderTopRightRadius: BorderRadiusEnum['2x'],
-          borderTopLeftRadius: BorderRadiusEnum['2x'],
-        }}
-        resizeMode="contain"
-        padding={PaddingEnum['2x']}
-        justifyContent="flex-start"
-        height={200}>
-        <Row>
-          <Col size={5}>
-            <Text
-              backgroundColor={'#F1F1F1'}
-              paddingHorizontal={6}
-              paddingVertical={3}
-              borderRadius={6}
-              opacity={0.7}
-              textAlign="center"
-              label={brand}
-              variant="p-small"
-            />
-          </Col>
+    <DoubleClick onClick={() => props.handlePressCheck(id)}>
+      <View
+        style={{
+          backgroundColor: '#F5F5F5',
+          borderRadius: BorderRadiusEnum['2x'],
+          height: 420,
+          width: 280,
+          padding: 10,
+          marginRight: MarginEnum['2x'],
+        }}>
+        <BackgroundImageLayout
+          source={{
+            uri: `https:${imageProduct}`,
+          }}
+          imageStyle={{
+            borderTopRightRadius: BorderRadiusEnum['2x'],
+            borderTopLeftRadius: BorderRadiusEnum['2x'],
+          }}
+          resizeMode="contain"
+          padding={PaddingEnum['2x']}
+          justifyContent="flex-start"
+          height={200}>
+          <Row>
+            <Col size={5}>
+              <Text
+                backgroundColor={'#F1F1F1'}
+                paddingHorizontal={6}
+                paddingVertical={3}
+                borderRadius={6}
+                opacity={0.7}
+                textAlign="center"
+                label={brand}
+                variant="p-small"
+              />
+            </Col>
 
-          <Col size={5} alignItems="flex-end">
-            {props.stateFavoriteProducts.includes(id) ? (
-              <TouchableOpacity onPress={() => props.handlePressUncheck(id)}>
-                <WishlistMarkImage />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => props.handlePressCheck(id)}>
-                <WishlistImage />
-              </TouchableOpacity>
-            )}
-          </Col>
-        </Row>
-      </BackgroundImageLayout>
-      <View>
-        <Text
-          marginBottom={MarginEnum['0.5x']}
-          variant="h3-bold"
-          label={name}
-        />
-        <Row marginBottom={MarginEnum['0.5x']} flexWrap="wrap">
-          {tagList.map((tagListData, tagListDataIndex) => {
-            return (
-              <Col marginRight={MarginEnum['0.5x']} key={tagListDataIndex}>
-                <Text
-                  marginBottom={MarginEnum['0.5x']}
-                  variant="p-small"
-                  label={`${tagListData},`}
-                />
-              </Col>
-            );
-          })}
-        </Row>
+            <Col size={5} alignItems="flex-end">
+              {props.stateFavoriteProducts.includes(id) ? (
+                <TouchableOpacity onPress={() => props.handlePressUncheck(id)}>
+                  <WishlistMarkImage />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => props.handlePressCheck(id)}>
+                  <WishlistImage />
+                </TouchableOpacity>
+              )}
+            </Col>
+          </Row>
+        </BackgroundImageLayout>
+        <View>
+          <Text
+            marginBottom={MarginEnum['0.5x']}
+            variant="h3-bold"
+            label={name}
+          />
+          <Row marginBottom={MarginEnum['0.5x']} flexWrap="wrap">
+            {tagList.map((tagListData, tagListDataIndex) => {
+              return (
+                <Col marginRight={MarginEnum['0.5x']} key={tagListDataIndex}>
+                  <Text
+                    marginBottom={MarginEnum['0.5x']}
+                    variant="p-small"
+                    label={`${tagListData},`}
+                  />
+                </Col>
+              );
+            })}
+          </Row>
 
-        <Row>
-          <Col marginRight={MarginEnum['0.5x']}>
-            <StarImage />
-          </Col>
-          <Col marginRight={MarginEnum['2x']}>
-            <Text
-              marginBottom={MarginEnum['0.5x']}
-              variant="p-small"
-              label={rating || 'N/A'}
-            />
-          </Col>
-          <Col marginRight={MarginEnum['0.5x']}>
-            <PriceImage />
-          </Col>
-          <Col>
-            <Text
-              marginBottom={MarginEnum['0.5x']}
-              variant="p-small"
-              label={price}
-            />
-          </Col>
-        </Row>
+          <Row>
+            <Col marginRight={MarginEnum['0.5x']}>
+              <StarImage />
+            </Col>
+            <Col marginRight={MarginEnum['2x']}>
+              <Text
+                marginBottom={MarginEnum['0.5x']}
+                variant="p-small"
+                label={rating || 'N/A'}
+              />
+            </Col>
+            <Col marginRight={MarginEnum['0.5x']}>
+              <PriceImage />
+            </Col>
+            <Col>
+              <Text
+                marginBottom={MarginEnum['0.5x']}
+                variant="p-small"
+                label={price}
+              />
+            </Col>
+          </Row>
 
-        <Row>
-          <Col marginRight={MarginEnum['0.5x']}>
-            <InfoImage />
-          </Col>
-          <Col>
-            <Text
-              marginBottom={MarginEnum['0.5x']}
-              variant="p-small"
-              label={category}
-            />
-          </Col>
-        </Row>
+          <Row>
+            <Col marginRight={MarginEnum['0.5x']}>
+              <InfoImage />
+            </Col>
+            <Col>
+              <Text
+                marginBottom={MarginEnum['0.5x']}
+                variant="p-small"
+                label={category}
+              />
+            </Col>
+          </Row>
 
-        <Row>
-          <Col size={5} marginRight={5}>
-            <Button.Normal
-              onPress={() => Linking.openURL(productLink)}
-              variant="secondary"
-              label="View brand"
-            />
-          </Col>
-          <Col size={5} marginLeft={5}>
-            <Button.Normal
-              onPress={() => props.onPressOrderNow(productLink)}
-              label="Order now"
-            />
-          </Col>
-        </Row>
+          <Row>
+            <Col size={5} marginRight={5}>
+              <Button.Normal
+                onPress={() => Linking.openURL(productLink)}
+                variant="secondary"
+                label="View brand"
+              />
+            </Col>
+            <Col size={5} marginLeft={5}>
+              <Button.Normal
+                onPress={() => props.onPressOrderNow(productLink)}
+                label="Order now"
+              />
+            </Col>
+          </Row>
+        </View>
       </View>
-    </View>
+    </DoubleClick>
   );
 };
 
